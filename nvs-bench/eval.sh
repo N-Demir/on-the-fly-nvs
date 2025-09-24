@@ -20,5 +20,5 @@ output_folder=$2
 
 finetuning_epochs=100
 
-python train.py -s $data_folder -m $output_folder --test_hold 8 --save_at_finetune_epoch $finetuning_epochs
+python train.py -s $data_folder -m $output_folder --test_hold 8 --save_at_finetune_epoch $finetuning_epochs --downsampling=1
 cp -r $output_folder/$finetuning_epochs/test_images $output_folder/test_renders

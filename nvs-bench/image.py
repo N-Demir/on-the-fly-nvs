@@ -25,10 +25,11 @@ nvs_bench_volume = Volume.from_name("nvs-bench", create_if_missing=True)
 
 modal_volumes: dict[str | PurePosixPath, Volume] = {
     "/nvs-bench": nvs_bench_volume,
+    "/root/.cache": Volume.from_name("torch-cache", create_if_missing=True),
 }
 
 image = (
-    Image.from_registry("pytorch/pytorch:2.4.1-cuda12.1-cudnn9-devel")  # find others at: https://hub.docker.com/
+    Image.from_registry("pytorch/pytorch:2.7.1-cuda12.8-cudnn9-devel")  # find others at: https://hub.docker.com/
     .env(
         {
             # Set Torch CUDA Compatbility to be for RTX 4090, T4, L40s, and A100
@@ -86,4 +87,10 @@ image = (
     # .run_commands("pip install submodules/diff-gaussian-rasterization")
     # .run_commands("pip install -e .")
     # Note: If your run_commands step needs access to a gpu it's actually possible to do that through "run_commands(gpu='L40S', ...)"
+
+    .run_commands("git clone https://github.com/N-Demir/on-the-fly-nvs.git --recursive .")
+
+    .run_commands("pip install torch torchvision xformers --index-url https://download.pytorch.org/whl/cu128")
+    .run_commands("pip install cupy-cuda12x")
+    .run_commands("pip install -r requirements.txt")
 )

@@ -17,3 +17,8 @@ output_folder=$2
 #   python render.py --data $data_folder/test --output $output_folder --eval
 # 3) Move the renders into `$output_folder/test_renders`
 #   mv $output_folder/test/ours_30000/renders $output_folder/test_renders
+
+finetuning_epochs=100
+
+python train.py -s $data_folder -m $output_folder --test_hold 8 --save_at_finetune_epoch $finetuning_epochs
+cp -r $output_folder/$finetuning_epochs/test_images $output_folder/test_renders
